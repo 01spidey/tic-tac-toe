@@ -1,0 +1,17 @@
+div{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-title{
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 2rem;
+    background-color: #fb840c;
+    color: white;
+    width: fit-content;
+    padding: 5px 130px;
+    border-radius: 10px;
+}

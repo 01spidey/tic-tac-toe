@@ -1,0 +1,59 @@
+
+.board-main{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 10px;
+
+    table{
+        height: 90%;
+        width: 90%;
+        table-layout: fixed;
+        tbody{
+            height: 100%;
+            td{
+                border: 1px solid;
+                padding: 10px;
+                border-radius: 10px;
+                cursor: pointer;
+                font-family: 'Poppins';
+                font-weight: bold;
+                border: none;
+                
+            }
+
+            .cell-x{
+                border: 1px solid #ee6352;
+                background-color: #ee6352;
+                color: white;
+                
+            }
+
+            .cell-o{
+                border: 1px solid #59cd90;
+                background-color: #59cd90;
+                color: white;
+                
+            }
+
+            .cellHover{
+                border: 1px solid black;
+                span{
+                    opacity: 0;
+                    // transition: .2s ease;
+                }
+                &:hover{
+                    // background-color: rgba(0, 0, 0, 0.35);
+                    span{
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        
+    }
+    
+}
