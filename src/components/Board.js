@@ -6,7 +6,10 @@ import { FaCircle } from 'react-icons/fa';
 const Board = (
     {
         gridSize,
-        player
+        player,
+        mode,
+        difficulty,
+        timer
     }
 ) => {
 
@@ -24,6 +27,78 @@ const Board = (
         }
         setGridCells(temp)
     }, [])
+
+    useEffect(()=>{
+        console.log(timer)
+    }, [timer])
+
+    useEffect(()=>{
+        console.log(validateBoard())
+    }, [gridCells])
+
+    const validateBoard = ()=>{
+
+        const toCheck = turn==='X'?'O':'X'
+        
+        let flag = true
+        
+        try{
+
+            let matchingCells = []
+
+            for(let i=0;i<gridSize;i++){
+                flag = true
+                matchingCells = []
+
+                for(let j=0;j<gridSize;j++){
+                    if(gridCells[i][j]!==toCheck) flag = false
+                    else matchingCells.push([i, j])
+                }
+                if(flag){
+                    return matchingCells
+                }
+            }
+
+            // Checking columns
+            flag = true
+            for(let i=0;i<gridSize;i++){
+                flag = true
+                matchingCells = []
+                for(let j=0;j<gridSize;j++){
+                    if(gridCells[j][i]!==toCheck) flag = false
+                    else matchingCells.push([j, i])
+                }
+                if(flag){
+                    return matchingCells
+                }
+            }
+
+            // Checking left-right diagonals
+            flag = true
+            matchingCells = []
+            for(let i=0;i<gridSize;i++){
+                if(gridCells[i][i]!==toCheck) flag = false
+                else matchingCells.push([i, i])
+            }
+            if(flag) return matchingCells
+
+            // Checking right-left diagonals
+            flag = true
+            matchingCells = []
+            for(let i=0;i<gridSize;i++){
+                if(gridCells[i][gridSize-i-1]!==toCheck) flag = false
+                else matchingCells.push([i, gridSize-i-1])
+            }
+            if(flag) return matchingCells
+
+            return null
+
+        }
+        catch(err){
+            console.log('Error in validateBoard')
+            return null
+        }
+    }
 
     const setCell = (i, j, turn)=>{
         let temp = [...gridCells]

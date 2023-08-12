@@ -6,8 +6,8 @@ import {IoMdRefresh} from 'react-icons/io'
 import Board from './Board'
 import { ImCross } from 'react-icons/im';
 import { FaCircle, FaCheckCircle} from 'react-icons/fa';
-import {BiGrid, BiGridAlt, BiSolidAlarm} from 'react-icons/bi'
-
+import {BiSolidAlarm} from 'react-icons/bi'
+import {BsGridFill} from 'react-icons/bs'
 
 
 const Content = () => {
@@ -28,6 +28,43 @@ const Content = () => {
         setSection(4)
     }
     
+
+    // React.useEffect(()=>{
+    //     console.log('Timer Started')
+    //     // timerFunction()
+    // }, [])
+
+    // This is the timer function
+    // React.useEffect(()=>{
+    //     if(timer===0){
+    //         console.log('Game Over')
+    //     }
+    //     else{
+    //         setTimeout(()=>{
+    //             setTimer(timer-1)
+    //         }, 1000)
+    //     }
+    // })
+
+    const timerFunction = ()=>{
+        while(timer>0){
+            setTimeout(()=>{
+                setTimer(timer-1)
+                
+            }, 1000)
+        }
+        if(timer===0){
+            console.log('Game Over')
+        }
+    }
+
+    // const togglePlayer = ()=>{
+    //     if(player==='X') setTurn('O')
+    //     else setTurn('X')
+    // }
+
+
+
     const resetGame = ()=>{
         console.log('Game Reset')
     }
@@ -300,6 +337,9 @@ const Content = () => {
                     <Board 
                         gridSize = {grid} 
                         player = {player}
+                        mode = {mode}
+                        difficulty = {difficulty}
+                        timer = {timer}
                     />
                     
                 </div>
@@ -342,7 +382,7 @@ const Content = () => {
                             <div className='info-box'>
                                 <div className="info">
                                     <div className="field" style={{backgroundColor : '#fc8019'}}>
-                                        <span> <BiGridAlt/> </span>
+                                        <span> <BsGridFill/> </span>
                                         <p>{`${grid} x ${grid}`}</p>
                                     </div>
                                     
