@@ -5,7 +5,9 @@ import {IoFlagSharp} from 'react-icons/io5'
 import {IoMdRefresh} from 'react-icons/io'
 import Board from './Board'
 import { ImCross } from 'react-icons/im';
-import { FaCircle } from 'react-icons/fa';
+import { FaCircle, FaCheckCircle} from 'react-icons/fa';
+import {BiGrid, BiGridAlt, BiSolidAlarm} from 'react-icons/bi'
+
 
 
 const Content = () => {
@@ -15,6 +17,11 @@ const Content = () => {
     const [grid, setGrid] = useState(3)
     const [mode, setMode] = useState('person-duo')
     const [popup, setPopup] = useState(null)
+    const [difficulty, setDifficulty] = useState('Easy')
+    const [window, setWindow] = useState(30)
+
+    // I need to create a usestate for realtime timer binding
+    const [timer, setTimer] = useState(window)
 
 
     const startGame = ()=>{
@@ -35,6 +42,8 @@ const Content = () => {
         setPlayer('X')
         setGrid(3)
         setMode('person-duo')
+        setDifficulty('Easy')
+        setWindow(30)
         setPopup(true)
         console.log('Game Restarted')
     }
@@ -156,37 +165,116 @@ const Content = () => {
         section===3?
             <div className="choose-side-card">
                 <div className="choose-side-card__title">
-                    <p>Player Side</p>
+                    <p>Game Configurations</p>
                 </div>
 
                 <div className="choose-side-card__content">
-                    <div className="choose-side-card__content__sub" id={
-                        player==='X'?'x_card_sub_active' : 'x_card_sub_inactive'}
-                        onClick={()=>setPlayer('X')}
-                        >
-                        <span>
-                            <ImCross/>
-                        </span>
+                    <div className="choose-side-card__sub">
+                        <div className="choose-side-card__sub__title">
+                            <p>Choose Your Side</p>
+                        </div>
                     </div>
 
-                    <div className="choose-side-card__content__sub" id={
-                        player==='O'?'o_card_sub_active' : 'o_card_sub_inactive'}
-                        onClick={()=>setPlayer('O')}
-                        >
-                        <span>
-                            <FaCircle/>
-                        </span>
+                    <div className="choose-side-card__sub">
+
+                        <div className="choose-side-card__sub__content"
+                            onClick={()=>setPlayer('X')}
+                            >
+                            <span style={{color:player==='X'?'#ee6352':'#aaa'}}
+                            >
+                                <ImCross/>
+                            </span>
+                        </div>
+
+                        <div className="choose-side-card__sub__content"
+                            onClick={()=>setPlayer('O')}
+                            >
+                            <span style={{color:player==='O'?'#59cd90':'#aaa'}}
+                            >
+                                <FaCircle/>
+                            </span>
+                        </div>
+
                     </div>
                 </div>
-                
-                <p className="dialog">
-                    You will Play as <span style={
-                        {
-                            color: player==='X'?'#ee6352':'#59cd90',
-                            fontWeight: 'bold'
-                        }
-                    }>'{player}'</span>
-                </p>
+
+                <div className="choose-side-card__content">
+                    <div className="btm-sub">
+                        <div className="title">
+                            Difficulty
+                        </div>
+                        <div className="btm-content">
+                            <div className="difficulty-card"
+                                onClick={()=>setDifficulty('Easy')}
+                                style={ {backgroundColor: difficulty==='Easy'?'green':'#aaa'}}
+                            >
+                                <span>
+                                   <FaCheckCircle/> 
+                                </span>
+                                <p>Easy</p>
+                            </div>
+
+                            <div className="difficulty-card"
+                                onClick={()=>setDifficulty('Medium')}
+                                style={ {backgroundColor: difficulty==='Medium'?'orange':'#aaa'}}
+                            >
+                                <span>
+                                   <FaCheckCircle/> 
+                                </span>
+                                <p>Medium</p>
+                            </div>
+
+                            <div className="difficulty-card"
+                                onClick={()=>setDifficulty('Hard')}
+                                style={{backgroundColor: difficulty==='Hard'?'red':'#aaa'}}
+                            >
+                                <span>
+                                   <FaCheckCircle/> 
+                                </span>
+                                <p>Hard</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="btm-sub">
+                        <div className="title">
+                            Window Duration
+                        </div>
+
+                        <div className="btm-content">
+                            <div className="difficulty-card"
+                                onClick={()=>setWindow(30)}
+                                style={ {backgroundColor: window===30?'green':'#aaa'}}
+                            >
+                                <span>
+                                   <BiSolidAlarm/>
+                                </span>
+                                <p>30 sec</p>
+                            </div>
+
+                            <div className="difficulty-card"
+                                onClick={()=>setWindow(20)}
+                                style={ {backgroundColor: window===20?'orange':'#aaa'}}
+                            >
+                                <span>
+                                   <BiSolidAlarm/> 
+                                </span>
+                                <p>20 sec</p>
+                            </div>
+
+                            <div className="difficulty-card"
+                                onClick={()=>setWindow(10)}
+                                style={{backgroundColor: window===10?'red':'#aaa'}}
+                            >
+                                <span>
+                                   <BiSolidAlarm/>
+                                </span>
+                                <p>10 sec</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         
         :
@@ -217,11 +305,13 @@ const Content = () => {
                 </div>
 
                 <div className="side-nav">
+
                     <div className="side-nav__title">
                         <p>Game</p>
                     </div>
 
                     <div className="side-nav__content">
+                        
                         <div className="players">
                             
                             <div className="players__player"
@@ -231,7 +321,7 @@ const Content = () => {
                                     }
                                 }
                             >
-                                <p>Player-1&nbsp;:&nbsp;</p>
+                                <p>You&nbsp;:&nbsp;</p>
                                 <span>{player}</span>
                             </div>
 
@@ -241,11 +331,66 @@ const Content = () => {
                                 }}
                             >
                                 <p>{
-                                    mode==='person-duo'?'Player-2':'AI Bot'
+                                    mode==='person-duo'?'Player':'AI Bot'
                                 }&nbsp;:&nbsp;</p>
                                 <span>{player==='X'?'O':'X'}</span>
                             </div>
                         </div>
+
+                        <div className="info-box-main">
+                            <p className="title">Configuration</p>
+                            <div className='info-box'>
+                                <div className="info">
+                                    <div className="field" style={{backgroundColor : '#fc8019'}}>
+                                        <span> <BiGridAlt/> </span>
+                                        <p>{`${grid} x ${grid}`}</p>
+                                    </div>
+                                    
+                                </div>
+
+                                <div className="info">
+                                    <div className="field"
+                                        style={{
+                                            backgroundColor: difficulty==='Easy'?'green':difficulty==='Medium'?'orange':'red',
+                                        }}
+                                    >
+                                        <span> <FaCheckCircle/> </span>
+                                        <p>{difficulty}</p>
+                                    </div>
+                                    
+                                </div>
+
+                                <div className="info">
+                                    <div className="field"
+                                        style={{
+                                            backgroundColor: window===30?'green':window===20?'orange':'red',
+                                        }}
+                                    >
+                                        <span> <BiSolidAlarm/> </span>
+                                        <p>{window} sec</p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div className="info-box-main">
+                            <p className="title">Timer</p>
+                            <div className='info-box'>
+                                <div className="timer-box"
+                                    style={{
+                                        backgroundColor: 
+                                            timer<=window/3?'red':
+                                            timer<=window/2?'orange':'green',
+                                    }}
+                                >
+                                    <div className="time">{timer}</div>
+                                    <div className="sub">s</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     
                     <div className="side-nav__btm">
