@@ -61,6 +61,7 @@ const Board = (
 
             // Checking columns
             flag = true
+            
             for(let i=0;i<gridSize;i++){
                 flag = true
                 matchingCells = []
