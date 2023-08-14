@@ -20,9 +20,10 @@ const Content = () => {
     const [difficulty, setDifficulty] = useState('Easy')
     const [window, setWindow] = useState(30)
 
-    const [reset, setReset] = useState(false)
+    const [resetFunction, setResetFunction] = useState(()=>{ 
+        return true
+    })
 
-    // const [resetFunction, setResetFunction] = useState(null)
 
     // I need to create a usestate for realtime timer binding
     const [timer, setTimer] = useState(window)
@@ -32,28 +33,32 @@ const Content = () => {
         setSection(4)
     }
 
+    useEffect(()=>{
+        console.log('Reset Function Changed', typeof(resetFunction))
+    }, [resetFunction])
+
     // useEffect(()=>{
     //     if(reset){
     //         setReset(false)
     //     }
     // }, [reset])
 
-    // React.useEffect(()=>{
-    //     console.log('Timer Started')
-    //     // timerFunction()
-    // }, [])
+    React.useEffect(()=>{
+        console.log('Timer Started')
+        // timerFunction()
+    }, [])
 
     // This is the timer function
-    // React.useEffect(()=>{
-    //     if(timer===0){
-    //         console.log('Game Over')
-    //     }
-    //     else{
-    //         setTimeout(()=>{
-    //             setTimer(timer-1)
-    //         }, 1000)
-    //     }
-    // })
+    React.useEffect(()=>{
+        if(timer===1){
+            console.log('Game Over')
+        }
+        else{
+            setTimeout(()=>{
+                setTimer(timer-1)
+            }, 1000)
+        }
+    })
 
     const timerFunction = ()=>{
         while(timer>0){
@@ -331,7 +336,7 @@ const Content = () => {
                                     restartGame = {restartGame} 
                                     closePopup = {closePopup}
                                     popupData = {popup}
-                                    setreset = {setReset}
+                                    resetFunction = {resetFunction}
                                 />
                             </div>
                         :
@@ -342,8 +347,7 @@ const Content = () => {
                             player = {player}
                             timer = {timer}
                             setPopup = {setPopup} 
-                            reset = {reset}
-                            setReset = {setReset} 
+                            setResetFunction = {setResetFunction}
                         />
                     
                 </div>

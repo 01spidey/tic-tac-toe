@@ -9,8 +9,8 @@ const Board = (
         player,
         timer,
         setPopup,
-        reset,
-        setReset
+        // reset,
+        setResetFunction
     }
 ) => {
 
@@ -20,12 +20,6 @@ const Board = (
     const [winningCells, setWinningCells] = useState([])
     const [gameOver, setGameOver] = useState(false)
     
-    useEffect(()=>{
-        if(reset){ 
-            resetBoard()
-            setReset(false)
-        }
-    }, [reset])
 
     const resetBoard = ()=>{
 
@@ -47,6 +41,7 @@ const Board = (
     }
 
     useEffect(()=>{
+        setResetFunction(()=>resetBoard)
         resetBoard()
     }, [])
 

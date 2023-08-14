@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../styles/popup.scss'
 
 const Popup = (
-  {resetGame, restartGame, closePopup, popupData, setreset}
+  {resetGame, restartGame, closePopup, popupData, resetFunction}
 ) => {
 
   const restart = ()=>{
@@ -14,6 +14,10 @@ const Popup = (
     popupData.callThis()
     closePopup();
   };
+
+  useEffect(()=>{
+    console.log('resetFunction changed', typeof resetFunction)
+  }, [resetFunction])
 
   return (
 
@@ -27,9 +31,8 @@ const Popup = (
             popupData.action!=='over'?
               <button id='action' className="btn" onClick={
                 popupData.action==='restart'? restart : ()=>{
-                  resetGame();
+                  resetFunction();
                   closePopup();
-                  setreset(true);
                 }
               }>
                 {popupData.action.toUpperCase()}
