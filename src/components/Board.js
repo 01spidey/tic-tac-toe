@@ -7,17 +7,20 @@ const Board = (
     {
         gridSize,
         player,
-        mode,
-        difficulty,
-        timer
+        timer,
+        setPopup
     }
 ) => {
 
     const [gridCells, setGridCells] = useState([])
     const [turn, setTurn] = useState(player)
-
-    useEffect(()=>{
+    const [winner, setWinner] = useState(null)
+    const [winningCells, setWinningCells] = useState([])
+    const [gameOver, setGameOver] = useState(false)
+    
+    const resetBoard = ()=>{
         let temp = []
+        console.log('Resetting board')
         for(let i=0;i<gridSize;i++){
             let row = []
             for(let j=0;j<gridSize;j++){
@@ -25,7 +28,16 @@ const Board = (
             }
             temp.push(row)
         }
+
         setGridCells(temp)
+        setTurn(player==='X'?'O':'X')
+        setWinner(null)
+        setWinningCells([])
+        setGameOver(false)
+    }
+
+    useEffect(()=>{
+        resetBoard()
     }, [])
 
     useEffect(()=>{
@@ -33,8 +45,28 @@ const Board = (
     }, [timer])
 
     useEffect(()=>{
-        console.log(validateBoard())
+        validateBoard()
     }, [gridCells])
+
+    useEffect(()=>{
+        if(winner!==null){
+            if(winner==='draw'){
+                setPopup({
+                    action: 'over',
+                    message: 'The game ended in a draw!',
+                    callThis: resetBoard
+                })
+            }else{
+                setPopup({
+                    action: 'over',
+                    message: `${winner} won the game!`,
+                    callThis: resetBoard
+                })
+            }
+            // resetBoard()
+        }
+
+    }, [winner])
 
     const validateBoard = ()=>{
 
@@ -46,6 +78,7 @@ const Board = (
 
             let matchingCells = []
 
+            // Checking rows
             for(let i=0;i<gridSize;i++){
                 flag = true
                 matchingCells = []
@@ -55,7 +88,9 @@ const Board = (
                     else matchingCells.push([i, j])
                 }
                 if(flag){
-                    return matchingCells
+                    setGameOver(true)
+                    setWinner(toCheck)
+                    setWinningCells(matchingCells)
                 }
             }
 
@@ -70,7 +105,9 @@ const Board = (
                     else matchingCells.push([j, i])
                 }
                 if(flag){
-                    return matchingCells
+                    setGameOver(true)
+                    setWinner(toCheck)
+                    setWinningCells(matchingCells)
                 }
             }
 
@@ -81,7 +118,11 @@ const Board = (
                 if(gridCells[i][i]!==toCheck) flag = false
                 else matchingCells.push([i, i])
             }
-            if(flag) return matchingCells
+            if(flag){
+                setGameOver(true)
+                setWinner(toCheck)
+                setWinningCells(matchingCells)
+            }
 
             // Checking right-left diagonals
             flag = true
@@ -90,15 +131,41 @@ const Board = (
                 if(gridCells[i][gridSize-i-1]!==toCheck) flag = false
                 else matchingCells.push([i, gridSize-i-1])
             }
-            if(flag) return matchingCells
+            if(flag){
+                setGameOver(true)
+                setWinner(toCheck)
+                setWinningCells(matchingCells)
+            }
+
+            // Checking for draw
+            flag = true
+            let count = 0
+            console.log('Checking for draw')
+            for(let i=0;i<gridSize;i++){
+                for(let j=0;j<gridSize;j++){
+                    if(gridCells[i][j]==='-') count++;
+                }
+            }
+            if(count===0){
+                setGameOver(true)
+                setWinner('draw')
+                setWinningCells([])
+            }
 
             return null
 
         }
         catch(err){
-            console.log('Error in validateBoard')
+            // console.log(err)
             return null
         }
+    }
+
+    const isCellMatching = (i,j)=>{
+        for(let k=0;k<winningCells.length;k++){
+            if(winningCells[k][0]===i && winningCells[k][1]===j) return true
+        }
+        return false
     }
 
     const setCell = (i, j, turn)=>{
@@ -110,7 +177,9 @@ const Board = (
 
   return (
     <div className="board-main">
+
         <table>
+            
             <tbody>
                 {
                     gridCells.map((row, i)=>{
@@ -121,7 +190,7 @@ const Board = (
                                         return (
                                             {
                                                 '-': 
-                                                <td className={turn==='X'?'cellHover':'cellHover'} 
+                                                <td className={`cellHover ${(!isCellMatching(i,j) && gameOver)? 'cell-inactive':''}`}
                                                 style={
                                                     {
                                                         fontSize : gridSize===3?'4rem':
@@ -140,7 +209,7 @@ const Board = (
                                                 </td>,
                                                 
                                                 'X': 
-                                                <td className='cell-x' 
+                                                <td className={`${(!isCellMatching(i,j) && gameOver?'cell-inactive': 'cell-x')}`} 
                                                     style={
                                                         {
                                                             fontSize : gridSize===3?'4rem':
@@ -155,7 +224,7 @@ const Board = (
                                                 </td>,
                                                 
                                                 'O': 
-                                                <td className='cell-o' 
+                                                <td className={`${(!isCellMatching(i,j) && gameOver?'cell-inactive': 'cell-o')}`}
                                                     style={
                                                         {
                                                             fontSize : gridSize===3?'4rem':
@@ -177,9 +246,11 @@ const Board = (
                     })
                 }
             </tbody>
+
         </table>
     </div>
   )
+
 }
 
 export default Board

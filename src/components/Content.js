@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/content.scss'
 import Popup from './Popup'
 import {IoFlagSharp} from 'react-icons/io5'
@@ -27,6 +27,7 @@ const Content = () => {
     const startGame = ()=>{
         setSection(4)
     }
+
     
 
     // React.useEffect(()=>{
@@ -58,13 +59,6 @@ const Content = () => {
         }
     }
 
-    // const togglePlayer = ()=>{
-    //     if(player==='X') setTurn('O')
-    //     else setTurn('X')
-    // }
-
-
-
     const resetGame = ()=>{
         console.log('Game Reset')
     }
@@ -81,7 +75,6 @@ const Content = () => {
         setMode('person-duo')
         setDifficulty('Easy')
         setWindow(30)
-        setPopup(true)
         console.log('Game Restarted')
     }
 
@@ -324,23 +317,23 @@ const Content = () => {
                     {
                         popup?
                             <div className="popup-container">
+                            
                                 <Popup 
                                     resetGame = {resetGame} 
                                     restartGame = {restartGame} 
                                     closePopup = {closePopup}
-                                    action = {popup}
+                                    popupData = {popup}
                                 />
                             </div>
                         :
                         null
                     }
-                    <Board 
-                        gridSize = {grid} 
-                        player = {player}
-                        mode = {mode}
-                        difficulty = {difficulty}
-                        timer = {timer}
-                    />
+                        <Board 
+                            gridSize = {grid} 
+                            player = {player}
+                            timer = {timer}
+                            setPopup = {setPopup}
+                        />
                     
                 </div>
 
@@ -434,11 +427,20 @@ const Content = () => {
                     </div>
                     
                     <div className="side-nav__btm">
-                        <div className="side-nav__btm__btn" onClick={()=>{setPopup('reset');}}>
+                        <div className="side-nav__btm__btn" onClick={()=>{
+                            setPopup({
+                                action: 'reset',
+                                message: 'Are you sure you want to reset the game?',
+                                
+                            });
+                        }}>
                             <IoMdRefresh/>
                             <p>Reset</p>
                         </div>
-                        <div className="side-nav__btm__btn" onClick={()=>{setPopup('restart')}}>
+                        <div className="side-nav__btm__btn" onClick={()=>{setPopup({
+                            action: 'restart',
+                            message: 'Are you sure you want to restart the game?'
+                        })}}>
                             <IoFlagSharp/>
                             <p>Start Again</p>
                         </div>

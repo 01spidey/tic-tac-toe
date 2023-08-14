@@ -2,35 +2,44 @@ import React from 'react'
 import '../styles/popup.scss'
 
 const Popup = (
-  {resetGame, restartGame, closePopup, action}
+  {resetGame, restartGame, closePopup, popupData}
 ) => {
 
   const restart = ()=>{
     restartGame()
     closePopup()
   }
-  const reset = ()=>{
-    resetGame()
-    closePopup()
-  }
+
+  const reset = () => {
+    popupData.callThis()
+    closePopup();
+  };
 
   return (
+
     <div className="card">
         <div className="dialog">
-          {
-            action==='restart'?
-              <p>Do you want to Restart?</p>
-            :
-              <p>Do you want to Reset?</p>
-          }
+          <p>{popupData.message}</p>
         </div>
+
         <div className="btm">
-          <button id='action' className="btn" onClick={
-            action==='restart'? restart : reset
+          {
+            popupData.action!=='over'?
+              <button id='action' className="btn" onClick={
+                popupData.action==='restart'? restart : reset
+              }>
+                {popupData.action.toUpperCase()}
+              </button>
+            :null
+          }
+          
+
+          <button id='close' className="btn" 
+          onClick={
+            (popupData.action==='over')?reset : closePopup
           }>
-            {action.toUpperCase()}
+            CLOSE
           </button>
-          <button id='close' className="btn" onClick={closePopup}>CLOSE</button>
         </div>
     </div>
   )
