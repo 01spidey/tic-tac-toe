@@ -2,7 +2,7 @@ import React from 'react'
 import '../styles/popup.scss'
 
 const Popup = (
-  {resetGame, restartGame, closePopup, popupData}
+  {resetGame, restartGame, closePopup, popupData, setreset}
 ) => {
 
   const restart = ()=>{
@@ -26,7 +26,11 @@ const Popup = (
           {
             popupData.action!=='over'?
               <button id='action' className="btn" onClick={
-                popupData.action==='restart'? restart : reset
+                popupData.action==='restart'? restart : ()=>{
+                  resetGame();
+                  closePopup();
+                  setreset(true);
+                }
               }>
                 {popupData.action.toUpperCase()}
               </button>

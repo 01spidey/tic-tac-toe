@@ -8,7 +8,9 @@ const Board = (
         gridSize,
         player,
         timer,
-        setPopup
+        setPopup,
+        reset,
+        setReset
     }
 ) => {
 
@@ -18,7 +20,15 @@ const Board = (
     const [winningCells, setWinningCells] = useState([])
     const [gameOver, setGameOver] = useState(false)
     
+    useEffect(()=>{
+        if(reset){ 
+            resetBoard()
+            setReset(false)
+        }
+    }, [reset])
+
     const resetBoard = ()=>{
+
         let temp = []
         console.log('Resetting board')
         for(let i=0;i<gridSize;i++){
@@ -51,6 +61,11 @@ const Board = (
     useEffect(()=>{
         if(winner!==null){
             if(winner==='draw'){
+                // I need to add a timeout for 2s here
+                setTimeout(() => {
+                    
+                }, 2000);
+
                 setPopup({
                     action: 'over',
                     message: 'The game ended in a draw!',

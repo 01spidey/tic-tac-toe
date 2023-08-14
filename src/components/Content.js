@@ -20,6 +20,10 @@ const Content = () => {
     const [difficulty, setDifficulty] = useState('Easy')
     const [window, setWindow] = useState(30)
 
+    const [reset, setReset] = useState(false)
+
+    // const [resetFunction, setResetFunction] = useState(null)
+
     // I need to create a usestate for realtime timer binding
     const [timer, setTimer] = useState(window)
 
@@ -28,7 +32,11 @@ const Content = () => {
         setSection(4)
     }
 
-    
+    // useEffect(()=>{
+    //     if(reset){
+    //         setReset(false)
+    //     }
+    // }, [reset])
 
     // React.useEffect(()=>{
     //     console.log('Timer Started')
@@ -323,6 +331,7 @@ const Content = () => {
                                     restartGame = {restartGame} 
                                     closePopup = {closePopup}
                                     popupData = {popup}
+                                    setreset = {setReset}
                                 />
                             </div>
                         :
@@ -332,7 +341,9 @@ const Content = () => {
                             gridSize = {grid} 
                             player = {player}
                             timer = {timer}
-                            setPopup = {setPopup}
+                            setPopup = {setPopup} 
+                            reset = {reset}
+                            setReset = {setReset} 
                         />
                     
                 </div>
