@@ -8,7 +8,9 @@ import { ImCross } from 'react-icons/im';
 import { FaCircle, FaCheckCircle} from 'react-icons/fa';
 import {BiSolidAlarm} from 'react-icons/bi'
 import {BsGridFill} from 'react-icons/bs'
-
+import lottie from 'lottie-react'
+import confetti from '../assets/confetti.json'
+import Lottie from 'lottie-react'
 
 const Content = () => {
 
@@ -19,6 +21,7 @@ const Content = () => {
     const [popup, setPopup] = useState(null)
     const [difficulty, setDifficulty] = useState('Easy')
     const [window, setWindow] = useState(30)
+    const [animation, setAnimation] = useState(null)
 
     const [resetFunction, setResetFunction] = useState(()=>{ 
         return true
@@ -49,16 +52,16 @@ const Content = () => {
     }, [])
 
     // This is the timer function
-    React.useEffect(()=>{
-        if(timer===1){
-            console.log('Game Over')
-        }
-        else{
-            setTimeout(()=>{
-                setTimer(timer-1)
-            }, 1000)
-        }
-    })
+    // React.useEffect(()=>{
+    //     if(timer===1){
+    //         console.log('Game Over')
+    //     }
+    //     else{
+    //         setTimeout(()=>{
+    //             setTimer(timer-1)
+    //         }, 1000)
+    //     }
+    // })
 
     const timerFunction = ()=>{
         while(timer>0){
@@ -325,19 +328,31 @@ const Content = () => {
         section===4?
         
             <div className="game-card-main">
+                
                 <div className="game-card">
 
                     {
-                        popup?
+                        (animation||popup)?
                             <div className="popup-container">
-                            
-                                <Popup 
-                                    resetGame = {resetGame} 
-                                    restartGame = {restartGame} 
-                                    closePopup = {closePopup}
-                                    popupData = {popup}
-                                    resetFunction = {resetFunction}
-                                />
+                                {
+                                    animation?
+                                        <Lottie
+                                            animationData={animation}
+                                            style={{width:'100%', height:'100%'}}
+                                        />
+                                    :
+
+                                    <Popup 
+                                        resetGame = {resetGame} 
+                                        restartGame = {restartGame} 
+                                        closePopup = {closePopup}
+                                        popupData = {popup}
+                                        resetFunction = {resetFunction}
+                                    />
+
+                                }
+                                
+                                
                             </div>
                         :
                         null
@@ -348,6 +363,7 @@ const Content = () => {
                             timer = {timer}
                             setPopup = {setPopup} 
                             setResetFunction = {setResetFunction}
+                            setAnimation = {setAnimation}
                         />
                     
                 </div>

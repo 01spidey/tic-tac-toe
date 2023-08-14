@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import '../styles/board.scss'
 import { ImCross } from 'react-icons/im';
 import { FaCircle } from 'react-icons/fa';
+import confetti from '../assets/confetti.json'
+import sad from '../assets/sad.json'
 
 const Board = (
     {
@@ -10,7 +12,8 @@ const Board = (
         timer,
         setPopup,
         // reset,
-        setResetFunction
+        setResetFunction,
+        setAnimation
     }
 ) => {
 
@@ -34,7 +37,7 @@ const Board = (
         }
 
         setGridCells(temp)
-        setTurn(player==='X'?'O':'X')
+        // setTurn(player==='X'?'O':'X')
         setWinner(null)
         setWinningCells([])
         setGameOver(false)
@@ -57,21 +60,30 @@ const Board = (
         if(winner!==null){
             if(winner==='draw'){
                 // I need to add a timeout for 2s here
+                setAnimation(confetti)
                 setTimeout(() => {
-                    
-                }, 2000);
+                    setAnimation(null)
+                    setPopup({
+                        action: 'over',
+                        message: 'The game ended in a draw!',
+                        callThis: resetBoard
+                    }) 
+                }, 2500);
 
-                setPopup({
-                    action: 'over',
-                    message: 'The game ended in a draw!',
-                    callThis: resetBoard
-                })
+                
             }else{
-                setPopup({
-                    action: 'over',
-                    message: `${winner} won the game!`,
-                    callThis: resetBoard
-                })
+                if(winner===player) setAnimation(confetti)
+                else setAnimation(sad)
+
+                setTimeout(() => {
+                    setAnimation(null)
+                    setPopup({
+                        action: 'over',
+                        message: `you ${winner===player?'won':'lost'} the game!`,
+                        callThis: resetBoard
+                    })    
+                }, 2500);
+                
             }
             // resetBoard()
         }
