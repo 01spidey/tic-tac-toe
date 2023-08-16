@@ -9,7 +9,11 @@ const Popup = (
     restartGame()
     closePopup()
   }
-
+  
+  // @output() output = new EventEmitter<String>();
+  // output.emit('Tom')
+  //
+  // 
   const [status, setStatus] = React.useState('')
 
   useEffect(()=>{

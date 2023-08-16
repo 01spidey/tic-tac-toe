@@ -4,16 +4,18 @@ import { ImCross } from 'react-icons/im';
 import { FaCircle } from 'react-icons/fa';
 import confetti from '../assets/confetti.json'
 import sad from '../assets/sad.json'
+import handshake from '../assets/handshake.json'
 
 const Board = (
     {
         gridSize,
         player,
         timer,
+        setTimer,
         setPopup,
-        // reset,
         setResetFunction,
-        setAnimation
+        setAnimation,
+        window
     }
 ) => {
 
@@ -23,6 +25,8 @@ const Board = (
     const [winningCells, setWinningCells] = useState([])
     const [gameOver, setGameOver] = useState(false)
     
+    const [timerId, setTimerId] = useState(null);
+
 
     const resetBoard = ()=>{
 
@@ -37,7 +41,7 @@ const Board = (
         }
 
         setGridCells(temp)
-        // setTurn(player==='X'?'O':'X')
+        setTurn(player)
         setWinner(null)
         setWinningCells([])
         setGameOver(false)
@@ -49,7 +53,32 @@ const Board = (
     }, [])
 
     useEffect(()=>{
+        if(timer===0){
+            console.log('Game Over')
+        }
+        else{
+            const newTimerId = setTimeout(() => {
+                setTimer(timer-1)
+            }, 1000);
+            setTimerId(newTimerId)
+        }
+    }, [timer,gridCells])
+
+
+    useEffect(()=>{
         console.log(timer)
+        if(timer===0){
+            // console.log(time)
+            setPopup({
+                action: 'over',
+                message: 'You ran out of time!',
+                callThis: ()=>{
+                    resetBoard()
+                    setTimer(window)
+                    setTurn(turn==='X'?'O':'X')
+                }
+            })
+        }
     }, [timer])
 
     useEffect(()=>{
@@ -60,7 +89,7 @@ const Board = (
         if(winner!==null){
             if(winner==='draw'){
                 // I need to add a timeout for 2s here
-                setAnimation(confetti)
+                setAnimation(handshake)
                 setTimeout(() => {
                     setAnimation(null)
                     setPopup({
@@ -195,6 +224,21 @@ const Board = (
         temp[i][j] = turn
         setGridCells(temp)
         setTurn(turn==='X'?'O':'X')
+        clearTimeout(timerId)
+        setTimer(window)
+    }
+
+    const runTimer = (timer)=>{
+        if(timer===0){
+            console.log('Game Over')
+        }
+        else{
+            const newTimerId = setTimeout(() => {
+                setTimer(timer-1)
+            }, 1000);
+            setTimerId(newTimerId)
+        }
+
     }
 
   return (

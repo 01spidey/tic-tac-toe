@@ -20,7 +20,7 @@ const Content = () => {
     const [mode, setMode] = useState('person-duo')
     const [popup, setPopup] = useState(null)
     const [difficulty, setDifficulty] = useState('Easy')
-    const [window, setWindow] = useState(30)
+    const [window, setWindow] = useState(10)
     const [animation, setAnimation] = useState(null)
 
     const [resetFunction, setResetFunction] = useState(()=>{ 
@@ -30,7 +30,6 @@ const Content = () => {
 
     // I need to create a usestate for realtime timer binding
     const [timer, setTimer] = useState(window)
-
 
     const startGame = ()=>{
         setSection(4)
@@ -46,14 +45,14 @@ const Content = () => {
     //     }
     // }, [reset])
 
+    let time = 0
     React.useEffect(()=>{
-        console.log('Timer Started')
-        // timerFunction()
+
     }, [])
 
     // This is the timer function
     // React.useEffect(()=>{
-    //     if(timer===1){
+    //     if(timer===0){
     //         console.log('Game Over')
     //     }
     //     else{
@@ -62,18 +61,6 @@ const Content = () => {
     //         }, 1000)
     //     }
     // })
-
-    const timerFunction = ()=>{
-        while(timer>0){
-            setTimeout(()=>{
-                setTimer(timer-1)
-                
-            }, 1000)
-        }
-        if(timer===0){
-            console.log('Game Over')
-        }
-    }
 
     const resetGame = ()=>{
         console.log('Game Reset')
@@ -361,9 +348,11 @@ const Content = () => {
                             gridSize = {grid} 
                             player = {player}
                             timer = {timer}
+                            setTimer = {setTimer}
                             setPopup = {setPopup} 
                             setResetFunction = {setResetFunction}
                             setAnimation = {setAnimation}
+                            window = {window}
                         />
                     
                 </div>
