@@ -29,7 +29,7 @@ const Popup = (
 
   const close = () => {
 
-    if(timer==0){
+    if(timer===0){
       setTimer(window)
       setTurn(turn==='X'? 'O' : 'X')
     }else{ 
