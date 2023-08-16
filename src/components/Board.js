@@ -5,6 +5,7 @@ import { FaCircle } from 'react-icons/fa';
 import confetti from '../assets/confetti.json'
 import sad from '../assets/sad.json'
 import handshake from '../assets/handshake.json'
+import Popup from './Popup';
 
 const Board = (
     {
@@ -15,12 +16,14 @@ const Board = (
         setPopup,
         setResetFunction,
         setAnimation,
-        window
+        window,
+        turn, setTurn, popupData
     }
 ) => {
 
     const [gridCells, setGridCells] = useState([])
-    const [turn, setTurn] = useState(player)
+
+    
     const [winner, setWinner] = useState(null)
     const [winningCells, setWinningCells] = useState([])
     const [gameOver, setGameOver] = useState(false)
@@ -31,7 +34,7 @@ const Board = (
     const resetBoard = ()=>{
 
         let temp = []
-        // console.log('Resetting board')
+        console.log('Resetting board')
         for(let i=0;i<gridSize;i++){
             let row = []
             for(let j=0;j<gridSize;j++){
@@ -41,13 +44,18 @@ const Board = (
         }
         
         setGridCells(temp)
+        setTimer(window)
+
         setTurn(player)
-        
+
         setWinner(null)
         setWinningCells([])
         
         setGameOver(false)
+       
     }
+
+
 
     useEffect(()=>{
         setResetFunction(()=>resetBoard)
@@ -55,10 +63,9 @@ const Board = (
     }, [])
 
     useEffect(()=>{
-        if(timer===0){
-            // console.log('Game Over')
-        }
-        else{
+        clearTimeout(timerId)
+        console.log(popupData)
+        if(timer>0 && !popupData){
             const newTimerId = setTimeout(() => {
                 setTimer(timer-1)
             }, 1000);
@@ -68,9 +75,8 @@ const Board = (
 
 
     useEffect(()=>{
-        // console.log(timer)
+        console.log('Time is changed', timer)
         if(timer===0){
-            // console.log(time)
             setPopup({
                 action: 'over',
                 message: 'You ran out of time!',
@@ -116,7 +122,6 @@ const Board = (
                 }, 2500);
                 
             }
-            // resetBoard()
         }
 
     }, [winner])
@@ -226,7 +231,6 @@ const Board = (
         temp[i][j] = turn
         setGridCells(temp)
         setTurn(turn==='X'?'O':'X')
-        clearTimeout(timerId)
         setTimer(window)
     }
 

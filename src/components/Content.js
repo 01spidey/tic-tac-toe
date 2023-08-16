@@ -22,6 +22,8 @@ const Content = () => {
     const [difficulty, setDifficulty] = useState('Easy')
     const [window, setWindow] = useState(10)
     const [animation, setAnimation] = useState(null)
+    const [turn, setTurn] = useState(player)
+
 
     const [resetFunction, setResetFunction] = useState(()=>{ 
         return true
@@ -35,32 +37,6 @@ const Content = () => {
         setSection(4)
     }
 
-    useEffect(()=>{
-        console.log('Reset Function Changed', typeof(resetFunction))
-    }, [resetFunction])
-
-    // useEffect(()=>{
-    //     if(reset){
-    //         setReset(false)
-    //     }
-    // }, [reset])
-
-    let time = 0
-    React.useEffect(()=>{
-
-    }, [])
-
-    // This is the timer function
-    // React.useEffect(()=>{
-    //     if(timer===0){
-    //         console.log('Game Over')
-    //     }
-    //     else{
-    //         setTimeout(()=>{
-    //             setTimer(timer-1)
-    //         }, 1000)
-    //     }
-    // })
 
     const resetGame = ()=>{
         console.log('Game Reset')
@@ -166,6 +142,7 @@ const Content = () => {
                 </div>
 
                 <div className="choose-mode-card__content">
+
                     <div className={`choose-mode-card__content__sub ${mode==='person-duo'?'active':'inactive'}`} id='person-duo' onClick={()=>setMode('person-duo')}>
                         <div className="img">
                             <span className="material-symbols-outlined">
@@ -179,6 +156,7 @@ const Content = () => {
                         </div>
                         <p className='dialog'>Player&nbsp;-&nbsp;Player</p>
                     </div>
+
                     <div className={`choose-mode-card__content__sub ${mode==='pc-duo'?'active':'inactive'}`} id='pc-duo' onClick={()=>setMode('pc-duo')}>
                         <div className="img">
                             <span className="material-symbols-outlined">
@@ -191,6 +169,7 @@ const Content = () => {
                         </div>
                         <p className='dialog'>Player&nbsp;-&nbsp;AI</p>
                     </div>
+                
                 </div>
                 
             </div> :
@@ -232,42 +211,47 @@ const Content = () => {
                 </div>
 
                 <div className="choose-side-card__content">
-                    <div className="btm-sub">
-                        <div className="title">
-                            Difficulty
-                        </div>
-                        <div className="btm-content">
-                            <div className="difficulty-card"
-                                onClick={()=>setDifficulty('Easy')}
-                                style={ {backgroundColor: difficulty==='Easy'?'green':'#aaa'}}
-                            >
-                                <span>
-                                   <FaCheckCircle/> 
-                                </span>
-                                <p>Easy</p>
-                            </div>
+                    {
+                        mode!=='person-duo'?
 
-                            <div className="difficulty-card"
-                                onClick={()=>setDifficulty('Medium')}
-                                style={ {backgroundColor: difficulty==='Medium'?'orange':'#aaa'}}
-                            >
-                                <span>
-                                   <FaCheckCircle/> 
-                                </span>
-                                <p>Medium</p>
+                        <div className="btm-sub">
+                            <div className="title">
+                                Difficulty
                             </div>
+                            <div className="btm-content">
+                                <div className="difficulty-card"
+                                    onClick={()=>setDifficulty('Easy')}
+                                    style={ {backgroundColor: difficulty==='Easy'?'green':'#aaa'}}
+                                >
+                                    <span>
+                                    <FaCheckCircle/> 
+                                    </span>
+                                    <p>Easy</p>
+                                </div>
 
-                            <div className="difficulty-card"
-                                onClick={()=>setDifficulty('Hard')}
-                                style={{backgroundColor: difficulty==='Hard'?'red':'#aaa'}}
-                            >
-                                <span>
-                                   <FaCheckCircle/> 
-                                </span>
-                                <p>Hard</p>
+                                <div className="difficulty-card"
+                                    onClick={()=>setDifficulty('Medium')}
+                                    style={ {backgroundColor: difficulty==='Medium'?'orange':'#aaa'}}
+                                >
+                                    <span>
+                                    <FaCheckCircle/> 
+                                    </span>
+                                    <p>Medium</p>
+                                </div>
+
+                                <div className="difficulty-card"
+                                    onClick={()=>setDifficulty('Hard')}
+                                    style={{backgroundColor: difficulty==='Hard'?'red':'#aaa'}}
+                                >
+                                    <span>
+                                    <FaCheckCircle/> 
+                                    </span>
+                                    <p>Hard</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> : null
+                    }
+                    
 
                     <div className="btm-sub">
                         <div className="title">
@@ -334,7 +318,13 @@ const Content = () => {
                                         restartGame = {restartGame} 
                                         closePopup = {closePopup}
                                         popupData = {popup}
+                                        setPopupData = {setPopup}
                                         resetFunction = {resetFunction}
+                                        timer = {timer}
+                                        setTimer = {setTimer}
+                                        window = {window}
+                                        turn = {turn}
+                                        setTurn = {setTurn}
                                     />
 
                                 }
@@ -353,6 +343,9 @@ const Content = () => {
                             setResetFunction = {setResetFunction}
                             setAnimation = {setAnimation}
                             window = {window}
+                            turn = {turn}
+                            setTurn = {setTurn}
+                            popupData = {popup}
                         />
                     
                 </div>
@@ -401,17 +394,21 @@ const Content = () => {
                                     
                                 </div>
 
-                                <div className="info">
-                                    <div className="field"
-                                        style={{
-                                            backgroundColor: difficulty==='Easy'?'green':difficulty==='Medium'?'orange':'red',
-                                        }}
-                                    >
-                                        <span> <FaCheckCircle/> </span>
-                                        <p>{difficulty}</p>
-                                    </div>
-                                    
-                                </div>
+                                {
+                                    mode!=='person-duo'?
+                                    <div className="info">
+                                        <div className="field"
+                                            style={{
+                                                backgroundColor: difficulty==='Easy'?'green':difficulty==='Medium'?'orange':'red',
+                                            }}
+                                        >
+                                            <span> <FaCheckCircle/> </span>
+                                            <p>{difficulty}</p>
+                                        </div>
+                                        
+                                    </div>:null
+                                }
+                                
 
                                 <div className="info">
                                     <div className="field"

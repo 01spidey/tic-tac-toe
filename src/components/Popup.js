@@ -2,18 +2,14 @@ import React, { useEffect } from 'react'
 import '../styles/popup.scss'
 
 const Popup = (
-  {resetGame, restartGame, closePopup, popupData, resetFunction}
+  {restartGame, closePopup, popupData, setPopupData, resetFunction, timer, setTimer, window, turn, setTurn}
 ) => {
 
   const restart = ()=>{
     restartGame()
     closePopup()
   }
-  
-  // @output() output = new EventEmitter<String>();
-  // output.emit('Tom')
-  //
-  // 
+
   const [status, setStatus] = React.useState('')
 
   useEffect(()=>{
@@ -24,11 +20,24 @@ const Popup = (
     console.log('Resetting Game!!')
     popupData.callThis()
     closePopup();
+    setPopupData(null)
   };
 
   useEffect(()=>{
-    // console.log('resetFunction changed', typeof resetFunction)
-  }, [resetFunction])
+    console.log('Timer: ', timer)
+  }, [timer])
+
+  const close = () => {
+
+    if(timer==0){
+      setTimer(window)
+      setTurn(turn==='X'? 'O' : 'X')
+    }else{ 
+      setTimer(timer-1)
+    }
+    closePopup();
+    setPopupData(null)
+  }
 
   return (
 
@@ -73,7 +82,7 @@ const Popup = (
             }
           } 
           onClick={
-            (popupData.action==='over')?reset : closePopup
+            (popupData.action==='over')?reset : close
           }>
             CLOSE
           </button>
