@@ -21,12 +21,13 @@ const Popup = (
   }, [popupData])
 
   const reset = () => {
+    console.log('Resetting Game!!')
     popupData.callThis()
     closePopup();
   };
 
   useEffect(()=>{
-    console.log('resetFunction changed', typeof resetFunction)
+    // console.log('resetFunction changed', typeof resetFunction)
   }, [resetFunction])
 
   return (

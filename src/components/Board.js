@@ -31,7 +31,7 @@ const Board = (
     const resetBoard = ()=>{
 
         let temp = []
-        console.log('Resetting board')
+        // console.log('Resetting board')
         for(let i=0;i<gridSize;i++){
             let row = []
             for(let j=0;j<gridSize;j++){
@@ -39,11 +39,13 @@ const Board = (
             }
             temp.push(row)
         }
-
+        
         setGridCells(temp)
         setTurn(player)
+        
         setWinner(null)
         setWinningCells([])
+        
         setGameOver(false)
     }
 
@@ -54,7 +56,7 @@ const Board = (
 
     useEffect(()=>{
         if(timer===0){
-            console.log('Game Over')
+            // console.log('Game Over')
         }
         else{
             const newTimerId = setTimeout(() => {
@@ -66,14 +68,14 @@ const Board = (
 
 
     useEffect(()=>{
-        console.log(timer)
+        // console.log(timer)
         if(timer===0){
             // console.log(time)
             setPopup({
                 action: 'over',
                 message: 'You ran out of time!',
                 callThis: ()=>{
-                    resetBoard()
+                    clearTimeout(timerId)
                     setTimer(window)
                     setTurn(turn==='X'?'O':'X')
                 }
@@ -191,7 +193,7 @@ const Board = (
             // Checking for draw
             flag = true
             let count = 0
-            console.log('Checking for draw')
+            // console.log('Checking for draw')
             for(let i=0;i<gridSize;i++){
                 for(let j=0;j<gridSize;j++){
                     if(gridCells[i][j]==='-') count++;
@@ -226,19 +228,6 @@ const Board = (
         setTurn(turn==='X'?'O':'X')
         clearTimeout(timerId)
         setTimer(window)
-    }
-
-    const runTimer = (timer)=>{
-        if(timer===0){
-            console.log('Game Over')
-        }
-        else{
-            const newTimerId = setTimeout(() => {
-                setTimer(timer-1)
-            }, 1000);
-            setTimerId(newTimerId)
-        }
-
     }
 
   return (
