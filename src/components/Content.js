@@ -15,7 +15,7 @@ import Lottie from 'lottie-react'
 const Content = () => {
 
     const [player, setPlayer] = useState('X')
-    const [section, setSection] = useState(4)
+    const [section, setSection] = useState(1)
     const [grid, setGrid] = useState(3)
     const [mode, setMode] = useState('person-duo')
     const [popup, setPopup] = useState(null)

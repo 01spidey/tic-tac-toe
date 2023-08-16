@@ -5,7 +5,6 @@ import { FaCircle } from 'react-icons/fa';
 import confetti from '../assets/confetti.json'
 import sad from '../assets/sad.json'
 import handshake from '../assets/handshake.json'
-import Popup from './Popup';
 
 const Board = (
     {
